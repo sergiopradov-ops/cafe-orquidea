@@ -36,7 +36,7 @@ resource "google_cloud_run_v2_service" "this" {
   name                = var.name
   location            = var.region
   ingress             = "INGRESS_TRAFFIC_ALL" # Firebase Hosting llama a Cloud Run por internet
-  deletion_protection = true
+  deletion_protection = false # el servicio es stateless; se recrea desde CI
 
   template {
     service_account = var.service_account_email
