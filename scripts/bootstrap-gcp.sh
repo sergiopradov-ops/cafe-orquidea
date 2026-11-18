@@ -30,9 +30,20 @@ ask() { # ask VAR "Pregunta" "default"
   printf -v "$var" '%s' "${value:-$default}"
 }
 
-for bin in gcloud terraform; do
-  command -v "$bin" >/dev/null || { echo "Falta $bin (Cloud Shell ya lo trae)."; exit 1; }
-done
+export CLOUDSDK_CORE_DISABLE_PROMPTS=1
+
+command -v gcloud >/dev/null || { echo "Falta gcloud."; exit 1; }
+
+# Cloud Shell ya no trae Terraform: se instala en ~/bin si no hay uno real.
+if ! terraform version 2>/dev/null | grep -q '^Terraform v'; then
+  TF_VERSION="$(curl -fsSL https://checkpoint-api.hashicorp.com/v1/check/terraform | sed -E 's/.*"current_version":"([^"]+)".*/\1/')"
+  echo "Instalando Terraform ${TF_VERSION} en ~/bin"
+  mkdir -p "$HOME/bin"
+  curl -fsSL -o /tmp/terraform.zip "https://releases.hashicorp.com/terraform/${TF_VERSION}/terraform_${TF_VERSION}_linux_amd64.zip"
+  unzip -o -q /tmp/terraform.zip terraform -d "$HOME/bin"
+  export PATH="$HOME/bin:$PATH"
+fi
+terraform version | head -1
 
 bold "Datos del proyecto"
 DEFAULT_REPO="$(git -C "$ROOT_DIR" config --get remote.origin.url 2>/dev/null | sed -E 's#(git@github.com:|https://github.com/)##; s#\.git$##' || true)"
@@ -68,7 +79,12 @@ if ! gcloud projects describe "$PROJECT_ID" >/dev/null 2>&1; then
 fi
 gcloud billing projects link "$PROJECT_ID" --billing-account="$BILLING_ACCOUNT" >/dev/null
 gcloud config set project "$PROJECT_ID" >/dev/null
-gcloud services enable storage.googleapis.com cloudresourcemanager.googleapis.com serviceusage.googleapis.com
+# Habilitar todas las APIs de una vez (evita prompts de gcloud más adelante).
+gcloud services enable storage.googleapis.com cloudresourcemanager.googleapis.com \
+  serviceusage.googleapis.com secretmanager.googleapis.com run.googleapis.com \
+  artifactregistry.googleapis.com iam.googleapis.com iamcredentials.googleapis.com \
+  sts.googleapis.com firebase.googleapis.com firebasehosting.googleapis.com \
+  recaptchaenterprise.googleapis.com monitoring.googleapis.com logging.googleapis.com
 
 bold "2/6 Bucket de estado de Terraform"
 BUCKET="gs://${PROJECT_ID}-tfstate"
