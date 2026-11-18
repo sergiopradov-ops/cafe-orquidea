@@ -1,17 +1,26 @@
+const address = "Amsterdam 147, CDMX";
+
 export const siteConfig = {
-  name: "Café Orquídea",
+  name: "Orquídea",
+  legalName: "Café Orquídea",
+  tagline: "Magia y paz en cada sorbo de café.",
   description:
-    "Pan artesanal, catering para eventos y foodtruck en la Ciudad de México.",
+    "Café de especialidad en la Condesa. Repostería sin azúcar, keto y sin gluten, catering para eventos y foodtruck.",
   // `||` y no `??`: en Docker los build args vacíos llegan como "" (no undefined).
   url: process.env.NEXT_PUBLIC_SITE_URL || "http://localhost:3000",
   whatsapp: process.env.NEXT_PUBLIC_WHATSAPP_NUMBER || "",
   email: process.env.NEXT_PUBLIC_CONTACT_EMAIL || "",
+  instagram: "https://www.instagram.com/orquidea.cafe/",
+  instagramHandle: "@orquidea.cafe",
+  address,
+  mapsUrl: `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(`Orquídea café, ${address}`)}`,
+  hours: [{ days: "Lunes a viernes", time: "7:00 a 21:00" }],
+  highlights: ["Café de especialidad", "Sin azúcar", "Keto", "Sin gluten"],
   nav: [
-    { href: "/", label: "Inicio" },
-    { href: "/panaderia", label: "Panadería" },
+    { href: "/panaderia", label: "Menú" },
     { href: "/eventos", label: "Catering" },
     { href: "/foodtruck", label: "Foodtruck" },
-    { href: "/contacto", label: "Contacto" },
+    { href: "/contacto", label: "Visítanos" },
   ],
 } as const;
 

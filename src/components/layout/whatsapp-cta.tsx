@@ -16,7 +16,7 @@ export function WhatsAppCta({ message, label, variant = "inline" }: Props) {
     return (
       <a
         href={href}
-        className="mt-8 inline-block rounded-full bg-orquidea-700 px-6 py-3 font-medium text-white hover:bg-orquidea-900"
+        className="mt-8 inline-block rounded-full bg-crema px-6 py-3 text-sm font-medium text-tinta transition-colors hover:bg-durazno-claro"
       >
         {label}
       </a>
@@ -26,7 +26,7 @@ export function WhatsAppCta({ message, label, variant = "inline" }: Props) {
   return (
     <p className="mt-6 text-sm">
       ¿Prefieres WhatsApp?{" "}
-      <a href={href} className="font-medium text-orquidea-700 underline">
+      <a href={href} className="font-medium text-salvia underline underline-offset-4">
         {label}
       </a>
     </p>

@@ -25,7 +25,7 @@ const siteKey = process.env.NEXT_PUBLIC_RECAPTCHA_SITE_KEY || undefined;
 type Props = { type: LeadRequest["type"] };
 
 const inputClass =
-  "mt-1 w-full rounded-lg border border-orquidea-100 bg-white px-3 py-2 focus:border-orquidea-500";
+  "mt-2 w-full rounded-xl border border-cafe/15 bg-white/80 px-4 py-3 font-normal transition-colors placeholder:text-tinta/40 focus:border-salvia focus:bg-white";
 
 export function LeadForm({ type }: Props) {
   const [state, formAction, pending] = useActionState<LeadFormState, FormData>(
@@ -56,8 +56,8 @@ export function LeadForm({ type }: Props) {
 
   if (state?.ok) {
     return (
-      <div role="status" className="rounded-2xl bg-orquidea-50 p-6">
-        <h2 className="text-2xl">¡Gracias!</h2>
+      <div role="status" className="rounded-2xl bg-durazno-claro p-8">
+        <h2 className="text-3xl">¡Gracias!</h2>
         <p className="mt-2">
           Recibimos tu solicitud. Te enviamos un correo de confirmación y te
           contactaremos en menos de 24 horas hábiles.
@@ -99,44 +99,44 @@ export function LeadForm({ type }: Props) {
 
         <div className="grid gap-4 sm:grid-cols-2">
           <label className="block">
-            <span className="text-sm font-medium">Nombre</span>
+            <span className="text-sm font-medium text-tinta/80">Nombre</span>
             <input name="name" required autoComplete="name" className={inputClass} {...aria("name")} />
             {fieldError("name")}
           </label>
           <label className="block">
-            <span className="text-sm font-medium">Teléfono / WhatsApp</span>
+            <span className="text-sm font-medium text-tinta/80">Teléfono / WhatsApp</span>
             <input name="phone" type="tel" required autoComplete="tel" className={inputClass} {...aria("phone")} />
             {fieldError("phone")}
           </label>
         </div>
 
         <label className="block">
-          <span className="text-sm font-medium">Correo</span>
+          <span className="text-sm font-medium text-tinta/80">Correo</span>
           <input name="email" type="email" required autoComplete="email" className={inputClass} {...aria("email")} />
           {fieldError("email")}
         </label>
 
         <div className="grid gap-4 sm:grid-cols-2">
           <label className="block">
-            <span className="text-sm font-medium">Fecha del evento</span>
+            <span className="text-sm font-medium text-tinta/80">Fecha del evento</span>
             <input name="eventDate" type="date" required className={inputClass} {...aria("eventDate")} />
             {fieldError("eventDate")}
           </label>
           <label className="block">
-            <span className="text-sm font-medium">Número de invitados</span>
+            <span className="text-sm font-medium text-tinta/80">Número de invitados</span>
             <input name="guests" type="number" min={1} required inputMode="numeric" className={inputClass} {...aria("guests")} />
             {fieldError("guests")}
           </label>
         </div>
 
         <label className="block">
-          <span className="text-sm font-medium">Ubicación del evento</span>
+          <span className="text-sm font-medium text-tinta/80">Ubicación del evento</span>
           <input name="location" required placeholder="Colonia, alcaldía o dirección" className={inputClass} {...aria("location")} />
           {fieldError("location")}
         </label>
 
         <label className="block">
-          <span className="text-sm font-medium">Cuéntanos más (opcional)</span>
+          <span className="text-sm font-medium text-tinta/80">Cuéntanos más (opcional)</span>
           <textarea name="notes" rows={4} maxLength={2000} className={inputClass} />
         </label>
 
@@ -149,13 +149,13 @@ export function LeadForm({ type }: Props) {
         <button
           type="submit"
           disabled={pending}
-          className="rounded-full bg-orquidea-700 px-6 py-3 font-medium text-white hover:bg-orquidea-900 disabled:opacity-60"
+          className="mt-2 rounded-full bg-salvia px-6 py-3.5 text-sm font-medium text-crema transition-colors hover:bg-salvia-oscuro disabled:opacity-60"
         >
           {pending ? "Enviando…" : "Enviar solicitud"}
         </button>
 
         {siteKey ? (
-          <p className="text-xs text-cafe/60">
+          <p className="text-xs text-tinta/50">
             Protegido por reCAPTCHA. Aplican la{" "}
             <a href="https://policies.google.com/privacy" className="underline">
               Política de privacidad

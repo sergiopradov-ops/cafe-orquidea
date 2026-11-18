@@ -2,8 +2,13 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 
+import { Icon } from "@/components/brand/icons";
+import { Photo } from "@/components/media/photo";
+import { categoryIcons } from "@/components/shop/product-card";
+import { ButtonLink } from "@/components/ui/button-link";
 import { formatMXN } from "@/lib/format";
 import { categoryLabels } from "@/lib/schemas/product";
+import { siteConfig } from "@/lib/site";
 import {
   getProductBySlug,
   listActiveProducts,
@@ -29,18 +34,37 @@ export default async function ProductPage({ params }: Props) {
   if (!product) notFound();
 
   return (
-    <article className="mx-auto max-w-3xl px-4 py-12">
-      <Link href="/panaderia" className="text-sm text-orquidea-700 hover:underline">
-        ← Volver al menú
-      </Link>
-      <p className="mt-6 text-xs tracking-wide text-orquidea-700 uppercase">
-        {categoryLabels[product.category]}
-      </p>
-      <h1 className="mt-1 text-4xl">{product.name}</h1>
-      <p className="mt-4 text-lg text-cafe/80">{product.description}</p>
-      <p className="mt-6 text-2xl font-semibold">
-        {formatMXN(product.priceCents)}
-      </p>
+    <article className="container-page grid gap-10 pt-28 pb-24 sm:pt-36 lg:grid-cols-2 lg:gap-16">
+      <div className="relative aspect-[4/5] overflow-hidden rounded-2xl">
+        <Photo
+          item={{ src: product.images[0] ?? null, alt: product.name }}
+          icon={categoryIcons[product.category]}
+          tone="durazno"
+          priority
+        />
+      </div>
+
+      <div className="lg:py-10">
+        <Link href="/panaderia" className="inline-flex items-center gap-2 text-sm text-cafe hover:underline">
+          <Icon name="arrow" className="h-4 w-4 rotate-180" />
+          Volver al menú
+        </Link>
+        <p className="eyebrow mt-8 text-cafe">{categoryLabels[product.category]}</p>
+        <h1 className="mt-3 text-5xl leading-tight sm:text-6xl">{product.name}</h1>
+        <p className="mt-6 text-3xl font-display">{formatMXN(product.priceCents)}</p>
+        <p className="mt-6 text-lg leading-relaxed text-tinta/80">{product.description}</p>
+        {product.leadTimeHours > 0 ? (
+          <p className="mt-4 text-sm text-cafe">
+            Pídelo con {product.leadTimeHours} h de anticipación.
+          </p>
+        ) : null}
+        <div className="mt-10 flex flex-wrap gap-3">
+          <ButtonLink href="/contacto">Visítanos</ButtonLink>
+          <ButtonLink href={siteConfig.instagram} variant="outline" external>
+            Ver en Instagram
+          </ButtonLink>
+        </div>
+      </div>
     </article>
   );
 }

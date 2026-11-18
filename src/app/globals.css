@@ -1,37 +1,54 @@
 @import "tailwindcss";
 
 /*
- * Tokens de marca (PROVISIONALES): se reemplazan en el Día 2–3
- * al cerrar el design system con el cliente.
+ * Design system Orquídea (v2)
+ * Paleta tomada de la marca (Instagram @orquidea.cafe): crema, durazno y salvia.
+ * Estructura visual inspirada en sitios editoriales: serif grande + sans ligera.
  */
 @theme {
-  --color-orquidea-50: #fbf5f9;
-  --color-orquidea-100: #f5e6f0;
-  --color-orquidea-300: #dfa9cc;
-  --color-orquidea-500: #b5508f;
-  --color-orquidea-700: #7d2f62;
-  --color-orquidea-900: #4a1a3a;
+  --color-crema: #efe9df;
+  --color-crema-claro: #f6f2eb;
+  --color-arena: #e3d9c9;
+  --color-tinta: #2b2a24;
+  --color-salvia: #3e4637;
+  --color-salvia-oscuro: #2f3529;
+  --color-salvia-claro: #a7b097;
+  --color-durazno: #efb8a3;
+  --color-durazno-claro: #f8ded3;
+  --color-cafe: #5b4636;
 
-  --color-crema: #fbf7f0;
-  --color-cafe: #3b2a20;
-  --color-trigo: #d9b26f;
-
-  --font-sans: var(--font-inter), ui-sans-serif, system-ui, sans-serif;
-  --font-display: var(--font-fraunces), ui-serif, Georgia, serif;
+  --font-sans: var(--font-montserrat), "Helvetica Neue", Helvetica, Arial, sans-serif;
+  --font-display: var(--font-newsreader), "Hoefler Text", Baskerville, Georgia, serif;
+  --font-script: var(--font-sacramento), cursive;
 }
 
 @layer base {
   html {
-    @apply bg-crema text-cafe antialiased;
+    @apply bg-crema font-light text-tinta antialiased;
+    scroll-behavior: smooth;
   }
 
   h1,
   h2,
   h3 {
-    @apply font-display tracking-tight;
+    @apply font-display font-normal tracking-tight text-balance;
+  }
+
+  ::selection {
+    @apply bg-durazno-claro;
   }
 
   :focus-visible {
-    @apply outline-2 outline-offset-2 outline-orquidea-500;
+    @apply outline-2 outline-offset-2 outline-durazno;
+  }
+}
+
+@layer components {
+  .container-page {
+    @apply mx-auto w-full max-w-7xl px-5 sm:px-8;
+  }
+
+  .eyebrow {
+    @apply text-xs font-medium tracking-[0.2em] uppercase;
   }
 }

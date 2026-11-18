@@ -1,35 +1,68 @@
 [
   {
-    "id": "prd_concha_vainilla",
-    "slug": "concha-de-vainilla",
-    "name": "Concha de vainilla",
-    "description": "Pan dulce de masa madre con cubierta de vainilla. (Texto provisional)",
-    "priceCents": 3500,
+    "id": "prd_americano",
+    "slug": "cafe-americano",
+    "name": "Café americano",
+    "description": "Café de especialidad. Producto y precio de muestra, por confirmar con Orquídea.",
+    "priceCents": 4500,
+    "category": "cafe",
+    "images": [],
+    "isActive": true,
+    "leadTimeHours": 0
+  },
+  {
+    "id": "prd_latte",
+    "slug": "latte",
+    "name": "Latte",
+    "description": "Espresso de especialidad con leche o bebida vegetal. Producto y precio de muestra.",
+    "priceCents": 6000,
+    "category": "cafe",
+    "images": [],
+    "isActive": true,
+    "leadTimeHours": 0
+  },
+  {
+    "id": "prd_panque_calabaza",
+    "slug": "panque-de-calabaza",
+    "name": "Panqué de calabaza",
+    "description": "Por rebanada o entero para llevar. Producto y precio de muestra.",
+    "priceCents": 5500,
     "category": "pan-dulce",
     "images": [],
     "isActive": true,
     "leadTimeHours": 0
   },
   {
-    "id": "prd_hogaza_campo",
-    "slug": "hogaza-de-campo",
-    "name": "Hogaza de campo",
-    "description": "Masa madre, harina de trigo y centeno, fermentación de 24 h. (Texto provisional)",
-    "priceCents": 12000,
-    "category": "pan-salado",
+    "id": "prd_pan_frances",
+    "slug": "pan-frances-frutos-rojos",
+    "name": "Pan francés con frutos rojos",
+    "description": "Para desayunar sin prisa. Producto y precio de muestra.",
+    "priceCents": 14500,
+    "category": "pan-dulce",
     "images": [],
     "isActive": true,
-    "leadTimeHours": 24
+    "leadTimeHours": 0
   },
   {
-    "id": "prd_pastel_tres_leches",
-    "slug": "pastel-tres-leches",
-    "name": "Pastel tres leches",
-    "description": "Para 12 personas. Pedido con 48 h de anticipación. (Texto provisional)",
+    "id": "prd_pastel_entero",
+    "slug": "pastel-entero-por-pedido",
+    "name": "Pastel entero por pedido",
+    "description": "Pide con 48 h de anticipación. Producto y precio de muestra.",
     "priceCents": 65000,
     "category": "pasteles",
     "images": [],
     "isActive": true,
     "leadTimeHours": 48
+  },
+  {
+    "id": "prd_cold_brew",
+    "slug": "cold-brew",
+    "name": "Cold brew",
+    "description": "Extracción en frío. Producto y precio de muestra.",
+    "priceCents": 6500,
+    "category": "bebidas",
+    "images": [],
+    "isActive": true,
+    "leadTimeHours": 0
   }
 ]

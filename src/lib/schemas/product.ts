@@ -6,6 +6,7 @@ import { z } from "zod";
  * lo que sale de Prisma, y la UI no cambia.
  */
 export const productCategorySchema = z.enum([
+  "cafe",
   "pan-dulce",
   "pan-salado",
   "pasteles",
@@ -28,8 +29,18 @@ export type Product = z.infer<typeof productSchema>;
 export type ProductCategory = z.infer<typeof productCategorySchema>;
 
 export const categoryLabels: Record<ProductCategory, string> = {
+  cafe: "Café",
   "pan-dulce": "Pan dulce",
-  "pan-salado": "Pan salado",
-  pasteles: "Pasteles",
-  bebidas: "Bebidas",
+  "pan-salado": "Salados",
+  pasteles: "Pastelería",
+  bebidas: "Bebidas frías",
 };
+
+/** Orden en que se muestran las categorías en el menú. */
+export const categoryOrder: ProductCategory[] = [
+  "cafe",
+  "bebidas",
+  "pan-dulce",
+  "pasteles",
+  "pan-salado",
+];
