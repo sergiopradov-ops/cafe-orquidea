@@ -1,0 +1,37 @@
+@import "tailwindcss";
+
+/*
+ * Tokens de marca (PROVISIONALES): se reemplazan en el Día 2–3
+ * al cerrar el design system con el cliente.
+ */
+@theme {
+  --color-orquidea-50: #fbf5f9;
+  --color-orquidea-100: #f5e6f0;
+  --color-orquidea-300: #dfa9cc;
+  --color-orquidea-500: #b5508f;
+  --color-orquidea-700: #7d2f62;
+  --color-orquidea-900: #4a1a3a;
+
+  --color-crema: #fbf7f0;
+  --color-cafe: #3b2a20;
+  --color-trigo: #d9b26f;
+
+  --font-sans: var(--font-inter), ui-sans-serif, system-ui, sans-serif;
+  --font-display: var(--font-fraunces), ui-serif, Georgia, serif;
+}
+
+@layer base {
+  html {
+    @apply bg-crema text-cafe antialiased;
+  }
+
+  h1,
+  h2,
+  h3 {
+    @apply font-display tracking-tight;
+  }
+
+  :focus-visible {
+    @apply outline-2 outline-offset-2 outline-orquidea-500;
+  }
+}

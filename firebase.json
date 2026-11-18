@@ -1,0 +1,16 @@
+{
+  "hosting": {
+    "public": "public",
+    "ignore": ["**/.*"],
+    "rewrites": [
+      {
+        "source": "**",
+        "run": {
+          "serviceId": "web",
+          "region": "us-central1",
+          "pinTag": false
+        }
+      }
+    ]
+  }
+}

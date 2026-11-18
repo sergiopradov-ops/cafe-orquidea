@@ -1,0 +1,35 @@
+[
+  {
+    "id": "prd_concha_vainilla",
+    "slug": "concha-de-vainilla",
+    "name": "Concha de vainilla",
+    "description": "Pan dulce de masa madre con cubierta de vainilla. (Texto provisional)",
+    "priceCents": 3500,
+    "category": "pan-dulce",
+    "images": [],
+    "isActive": true,
+    "leadTimeHours": 0
+  },
+  {
+    "id": "prd_hogaza_campo",
+    "slug": "hogaza-de-campo",
+    "name": "Hogaza de campo",
+    "description": "Masa madre, harina de trigo y centeno, fermentación de 24 h. (Texto provisional)",
+    "priceCents": 12000,
+    "category": "pan-salado",
+    "images": [],
+    "isActive": true,
+    "leadTimeHours": 24
+  },
+  {
+    "id": "prd_pastel_tres_leches",
+    "slug": "pastel-tres-leches",
+    "name": "Pastel tres leches",
+    "description": "Para 12 personas. Pedido con 48 h de anticipación. (Texto provisional)",
+    "priceCents": 65000,
+    "category": "pasteles",
+    "images": [],
+    "isActive": true,
+    "leadTimeHours": 48
+  }
+]

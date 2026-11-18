@@ -1,0 +1,14 @@
+node_modules
+.next
+.git
+.github
+.claude
+infra
+docs
+tests
+coverage
+.env
+.env.*
+*.md
+Dockerfile
+.dockerignore
