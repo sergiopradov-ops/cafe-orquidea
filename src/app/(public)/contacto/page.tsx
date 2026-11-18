@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 
-import { siteConfig, whatsappLink } from "@/lib/site";
+import { WhatsAppCta } from "@/components/layout/whatsapp-cta";
+import { siteConfig } from "@/lib/site";
 
 export const metadata: Metadata = {
   title: "Contacto",
@@ -31,12 +32,11 @@ export default function ContactoPage() {
           </div>
         ) : null}
       </dl>
-      <a
-        href={whatsappLink("Hola, tengo una pregunta.")}
-        className="mt-8 inline-block rounded-full bg-orquidea-700 px-6 py-3 font-medium text-white hover:bg-orquidea-900"
-      >
-        Escríbenos por WhatsApp
-      </a>
+      <WhatsAppCta
+        message="Hola, tengo una pregunta."
+        label="Escríbenos por WhatsApp"
+        variant="button"
+      />
     </section>
   );
 }

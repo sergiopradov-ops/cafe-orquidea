@@ -15,7 +15,9 @@ export const siteConfig = {
   ],
 } as const;
 
-export function whatsappLink(message: string): string {
+/** Devuelve null si no hay número configurado (la UI oculta el CTA). */
+export function whatsappLink(message: string): string | null {
+  if (!siteConfig.whatsapp) return null;
   const text = encodeURIComponent(message);
   return `https://wa.me/${siteConfig.whatsapp}?text=${text}`;
 }

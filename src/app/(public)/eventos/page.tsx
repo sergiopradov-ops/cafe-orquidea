@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 
 import { LeadForm } from "@/components/booking/lead-form";
-import { whatsappLink } from "@/lib/site";
+import { WhatsAppCta } from "@/components/layout/whatsapp-cta";
 
 export const metadata: Metadata = {
   title: "Catering para eventos",
@@ -20,15 +20,7 @@ export default function EventosPage() {
         <h2 className="mb-4 text-2xl">Solicita tu cotización</h2>
         <LeadForm type="catering" />
       </div>
-      <p className="mt-6 text-sm">
-        ¿Prefieres WhatsApp?{" "}
-        <a
-          href={whatsappLink("Hola, quiero cotizar catering para un evento.")}
-          className="font-medium text-orquidea-700 underline"
-        >
-          Escríbenos aquí
-        </a>
-      </p>
+      <WhatsAppCta message="Hola, quiero cotizar catering para un evento." label="Escríbenos aquí" />
     </section>
   );
 }
