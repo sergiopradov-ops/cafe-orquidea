@@ -16,7 +16,7 @@ export function getServerEnv() {
     resendApiKey: secret(process.env.RESEND_API_KEY),
     emailFrom: process.env.EMAIL_FROM ?? "Café Orquídea <onboarding@resend.dev>",
     leadsInboxEmail: process.env.LEADS_INBOX_EMAIL,
-    recaptchaSiteKey: process.env.NEXT_PUBLIC_RECAPTCHA_SITE_KEY,
+    recaptchaSiteKey: process.env.NEXT_PUBLIC_RECAPTCHA_SITE_KEY || undefined,
     recaptchaMinScore: Number(process.env.RECAPTCHA_MIN_SCORE ?? "0.5"),
   };
 }

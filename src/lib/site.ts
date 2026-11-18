@@ -2,9 +2,10 @@ export const siteConfig = {
   name: "Café Orquídea",
   description:
     "Pan artesanal, catering para eventos y foodtruck en la Ciudad de México.",
-  url: process.env.NEXT_PUBLIC_SITE_URL ?? "http://localhost:3000",
-  whatsapp: process.env.NEXT_PUBLIC_WHATSAPP_NUMBER ?? "",
-  email: process.env.NEXT_PUBLIC_CONTACT_EMAIL ?? "",
+  // `||` y no `??`: en Docker los build args vacíos llegan como "" (no undefined).
+  url: process.env.NEXT_PUBLIC_SITE_URL || "http://localhost:3000",
+  whatsapp: process.env.NEXT_PUBLIC_WHATSAPP_NUMBER || "",
+  email: process.env.NEXT_PUBLIC_CONTACT_EMAIL || "",
   nav: [
     { href: "/", label: "Inicio" },
     { href: "/panaderia", label: "Panadería" },
