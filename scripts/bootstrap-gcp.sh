@@ -121,7 +121,26 @@ elif [[ -z "$(gcloud secrets versions list resend-api-key --filter=state=enabled
   echo "resend-api-key = pending (los correos se escriben en el log hasta cargar la llave real)."
 fi
 
-terraform apply -input=false -auto-approve
+# Recuperación: si una creación previa de Cloud Run falló, queda "tainted" y
+# con deletion_protection=true en el estado; se elimina y se vuelve a crear.
+WEB_ADDR="module.web.google_cloud_run_v2_service.this"
+if terraform state show "$WEB_ADDR" 2>/dev/null | head -1 | grep -q tainted; then
+  echo "Cloud Run 'web' quedó en estado fallido: se elimina para recrearlo."
+  terraform state rm "$WEB_ADDR"
+  gcloud run services delete web --region "$REGION" --quiet || true
+fi
+
+# Los permisos IAM recién creados tardan en propagarse: hasta 3 intentos.
+for attempt in 1 2 3; do
+  if terraform apply -input=false -auto-approve; then break; fi
+  [[ $attempt == 3 ]] && exit 1
+  echo "Reintentando en 30 s (intento $((attempt + 1))/3)…"
+  sleep 30
+  if terraform state show "$WEB_ADDR" 2>/dev/null | head -1 | grep -q tainted; then
+    terraform state rm "$WEB_ADDR"
+    gcloud run services delete web --region "$REGION" --quiet || true
+  fi
+done
 
 WIF_PROVIDER="$(terraform output -raw wif_provider)"
 DEPLOYER_SA="$(terraform output -raw deployer_sa)"
