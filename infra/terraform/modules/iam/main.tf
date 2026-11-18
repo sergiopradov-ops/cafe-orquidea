@@ -46,6 +46,13 @@ resource "google_project_iam_member" "deployer_run_admin" {
   member  = "serviceAccount:${google_service_account.deployer.email}"
 }
 
+# Publicar Firebase Hosting desde CI (purga el CDN tras cada deploy).
+resource "google_project_iam_member" "deployer_hosting_admin" {
+  project = var.project_id
+  role    = "roles/firebasehosting.admin"
+  member  = "serviceAccount:${google_service_account.deployer.email}"
+}
+
 resource "google_artifact_registry_repository_iam_member" "deployer_writer" {
   location   = var.registry_location
   repository = var.registry_id

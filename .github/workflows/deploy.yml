@@ -88,3 +88,9 @@ jobs:
             --region "$REGION" \
             --to-tags "sha-${SHORT_SHA}=100" \
             --quiet
+
+      # Nueva release de Firebase Hosting = purga del CDN, así el sitio
+      # muestra la revisión recién promovida. No bloquea el deploy si falla.
+      - name: Purgar CDN de Firebase Hosting
+        continue-on-error: true
+        run: npx -y firebase-tools@latest deploy --only hosting --project "$PROJECT_ID" --non-interactive
