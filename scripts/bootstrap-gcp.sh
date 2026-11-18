@@ -24,6 +24,8 @@ bold() { printf '\n\033[1m%s\033[0m\n' "$*"; }
 ask() { # ask VAR "Pregunta" "default"
   local var="$1" prompt="$2" default="${3:-}" value
   if [[ -n "${!var:-}" ]]; then return; fi
+  # NONINTERACTIVE=1: usa el default sin preguntar (tutorial de Cloud Shell / CI).
+  if [[ "${NONINTERACTIVE:-0}" == "1" ]]; then printf -v "$var" '%s' "$default"; return; fi
   read -r -p "${prompt}${default:+ [${default}]}: " value
   printf -v "$var" '%s' "${value:-$default}"
 }
@@ -36,7 +38,15 @@ bold "Datos del proyecto"
 DEFAULT_REPO="$(git -C "$ROOT_DIR" config --get remote.origin.url 2>/dev/null | sed -E 's#(git@github.com:|https://github.com/)##; s#\.git$##' || true)"
 ask GITHUB_REPO "Repositorio GitHub (owner/repo)" "$DEFAULT_REPO"
 ask PROJECT_ID "ID del proyecto GCP (único global)" "orquidea-prod-$(head -c 2 /dev/urandom | od -An -tx1 | tr -d ' \n')"
-gcloud billing accounts list --filter=open=true --format="table(name,displayName)" || true
+# Si el proyecto ya tiene facturación, se reutiliza esa cuenta.
+if [[ -z "${BILLING_ACCOUNT:-}" ]] && gcloud projects describe "$PROJECT_ID" >/dev/null 2>&1; then
+  CURRENT_BILLING="$(gcloud billing projects describe "$PROJECT_ID" --format='value(billingAccountName)' 2>/dev/null || true)"
+  [[ -n "$CURRENT_BILLING" ]] && BILLING_ACCOUNT="${CURRENT_BILLING#billingAccounts/}"
+fi
+if [[ -z "${BILLING_ACCOUNT:-}" ]]; then
+  gcloud billing accounts list --filter=open=true --format="table(name,displayName)" || true
+  if [[ "${NONINTERACTIVE:-0}" == "1" ]]; then echo "Falta BILLING_ACCOUNT y el proyecto no tiene facturación."; exit 1; fi
+fi
 ask BILLING_ACCOUNT "Billing account ID (XXXXXX-XXXXXX-XXXXXX)"
 ask DOMAIN "Dominio del sitio (vacío si aún no hay)" ""
 ask LEADS_INBOX_EMAIL "Correo que recibe solicitudes de catering/foodtruck"
