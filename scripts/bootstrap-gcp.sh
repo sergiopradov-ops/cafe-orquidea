@@ -122,24 +122,18 @@ elif [[ -z "$(gcloud secrets versions list resend-api-key --filter=state=enabled
 fi
 
 # Recuperación: si una creación previa de Cloud Run falló, queda "tainted" y
-# con deletion_protection=true en el estado; se elimina y se vuelve a crear.
+# Terraform intentaría destruirlo (bloqueado por deletion_protection en el
+# estado). untaint hace que se actualice en su lugar con una revisión nueva.
 WEB_ADDR="module.web.google_cloud_run_v2_service.this"
-if terraform state show "$WEB_ADDR" 2>/dev/null | head -1 | grep -q tainted; then
-  echo "Cloud Run 'web' quedó en estado fallido: se elimina para recrearlo."
-  terraform state rm "$WEB_ADDR"
-  gcloud run services delete web --region "$REGION" --quiet || true
-fi
+untaint_web() { terraform untaint "$WEB_ADDR" >/dev/null 2>&1 && echo "Cloud Run 'web' marcado para actualizar en su lugar." || true; }
 
 # Los permisos IAM recién creados tardan en propagarse: hasta 3 intentos.
 for attempt in 1 2 3; do
+  untaint_web
   if terraform apply -input=false -auto-approve; then break; fi
   [[ $attempt == 3 ]] && exit 1
   echo "Reintentando en 30 s (intento $((attempt + 1))/3)…"
   sleep 30
-  if terraform state show "$WEB_ADDR" 2>/dev/null | head -1 | grep -q tainted; then
-    terraform state rm "$WEB_ADDR"
-    gcloud run services delete web --region "$REGION" --quiet || true
-  fi
 done
 
 WIF_PROVIDER="$(terraform output -raw wif_provider)"
