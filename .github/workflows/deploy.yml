@@ -12,9 +12,18 @@ concurrency:
   group: deploy-prod
   cancel-in-progress: false
 
+# Valores no secretos generados por scripts/bootstrap-gcp.sh (terraform output).
+# Una variable de repo con el mismo nombre (Settings → Variables) los sobrescribe.
 env:
   REGION: us-central1
   SERVICE: web
+  PROJECT_ID: ${{ vars.GCP_PROJECT_ID || 'cafeorquide-prod' }}
+  WIF_PROVIDER: ${{ vars.WIF_PROVIDER || 'projects/468532277143/locations/global/workloadIdentityPools/github/providers/github-oidc' }}
+  DEPLOYER_SA: ${{ vars.DEPLOYER_SA || 'github-deployer@cafeorquide-prod.iam.gserviceaccount.com' }}
+  SITE_URL: ${{ vars.SITE_URL || 'https://orquidea.cafe' }}
+  CONTACT_EMAIL: ${{ vars.CONTACT_EMAIL || 'patychavezreza@gmail.com' }}
+  WHATSAPP_NUMBER: ${{ vars.WHATSAPP_NUMBER || '' }}
+  RECAPTCHA_SITE_KEY: ${{ vars.RECAPTCHA_SITE_KEY || '6Ldu0SUuAAAAAMTdvnIXiWk9fA6x3MuhvxIbbgAU' }}
 
 jobs:
   ci:
@@ -22,23 +31,19 @@ jobs:
 
   deploy:
     needs: ci
-    # Hasta correr scripts/bootstrap-gcp.sh no existen las variables: no despliega.
-    if: vars.WIF_PROVIDER != ''
     runs-on: ubuntu-latest
     environment: production
     permissions:
       contents: read
       id-token: write # requerido por Workload Identity Federation
-    env:
-      PROJECT_ID: ${{ vars.GCP_PROJECT_ID }}
     steps:
       - uses: actions/checkout@v4
 
       - id: auth
         uses: google-github-actions/auth@v2
         with:
-          workload_identity_provider: ${{ vars.WIF_PROVIDER }}
-          service_account: ${{ vars.DEPLOYER_SA }}
+          workload_identity_provider: ${{ env.WIF_PROVIDER }}
+          service_account: ${{ env.DEPLOYER_SA }}
 
       - uses: google-github-actions/setup-gcloud@v2
 
@@ -52,10 +57,10 @@ jobs:
         run: |
           gcloud auth configure-docker "${REGION}-docker.pkg.dev" --quiet
           docker build \
-            --build-arg NEXT_PUBLIC_SITE_URL="${{ vars.SITE_URL }}" \
-            --build-arg NEXT_PUBLIC_WHATSAPP_NUMBER="${{ vars.WHATSAPP_NUMBER }}" \
-            --build-arg NEXT_PUBLIC_CONTACT_EMAIL="${{ vars.CONTACT_EMAIL }}" \
-            --build-arg NEXT_PUBLIC_RECAPTCHA_SITE_KEY="${{ vars.RECAPTCHA_SITE_KEY }}" \
+            --build-arg NEXT_PUBLIC_SITE_URL="${SITE_URL}" \
+            --build-arg NEXT_PUBLIC_WHATSAPP_NUMBER="${WHATSAPP_NUMBER}" \
+            --build-arg NEXT_PUBLIC_CONTACT_EMAIL="${CONTACT_EMAIL}" \
+            --build-arg NEXT_PUBLIC_RECAPTCHA_SITE_KEY="${RECAPTCHA_SITE_KEY}" \
             -t "$IMAGE" .
           docker push "$IMAGE"
 
