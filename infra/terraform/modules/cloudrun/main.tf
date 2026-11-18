@@ -32,11 +32,13 @@ variable "secret_env" {
   default     = {}
 }
 
+# ingress ALL: Firebase Hosting llama a Cloud Run por internet.
+# deletion_protection false: el servicio es stateless y se recrea desde CI.
 resource "google_cloud_run_v2_service" "this" {
   name                = var.name
   location            = var.region
-  ingress             = "INGRESS_TRAFFIC_ALL" # Firebase Hosting llama a Cloud Run por internet
-  deletion_protection = false # el servicio es stateless; se recrea desde CI
+  ingress             = "INGRESS_TRAFFIC_ALL"
+  deletion_protection = false
 
   template {
     service_account = var.service_account_email
