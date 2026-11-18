@@ -71,7 +71,14 @@ export default async function HomePage() {
     <>
       {/* Portada */}
       <section className="relative flex min-h-[92svh] items-end overflow-hidden bg-salvia text-crema">
-        <Photo item={media.hero} icon="cup" tone="salvia" priority sizes="100vw" />
+        <Photo
+          item={media.hero}
+          icon="cup"
+          tone="salvia"
+          priority
+          sizes="100vw"
+          className="md:justify-end md:pr-[10%]"
+        />
         <div aria-hidden="true" className="absolute inset-0 bg-linear-to-t from-salvia-oscuro/90 via-salvia-oscuro/30 to-transparent" />
         <div className="relative container-page pt-32 pb-14 sm:pb-20">
           <p className="eyebrow text-crema/80">Café de especialidad · Condesa, CDMX</p>
@@ -218,7 +225,7 @@ export default async function HomePage() {
           <ol className="mt-12 grid gap-10 sm:grid-cols-2 lg:grid-cols-4">
             {steps.map((s) => (
               <li key={s.n} className="border-t border-cafe/20 pt-6">
-                <p className="font-display text-5xl text-durazno">{s.n}</p>
+                <p className="font-display text-5xl text-cafe/50">{s.n}</p>
                 <h3 className="mt-4 text-2xl">{s.title}</h3>
                 <p className="mt-3 text-sm leading-relaxed text-tinta/75">{s.text}</p>
               </li>
