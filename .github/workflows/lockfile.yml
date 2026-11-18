@@ -1,0 +1,42 @@
+# Genera pnpm-lock.yaml si no existe y lo sube a main (una sola vez).
+# Después de eso el CI usa --frozen-lockfile y este workflow no hace nada.
+name: Bootstrap lockfile
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: write
+  actions: write # para disparar deploy.yml
+
+jobs:
+  lockfile:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - id: check
+        run: |
+          if [ -f pnpm-lock.yaml ]; then echo "missing=false" >> "$GITHUB_OUTPUT"; else echo "missing=true" >> "$GITHUB_OUTPUT"; fi
+      - if: steps.check.outputs.missing == 'true'
+        uses: pnpm/action-setup@v4
+      - if: steps.check.outputs.missing == 'true'
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - if: steps.check.outputs.missing == 'true'
+        run: pnpm install --lockfile-only
+      - if: steps.check.outputs.missing == 'true'
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add pnpm-lock.yaml
+          git commit -m "chore: generar pnpm-lock.yaml"
+          git push
+      # Un commit hecho con GITHUB_TOKEN no dispara otros workflows:
+      # lanzamos el deploy explícitamente para que corra con el lockfile.
+      - if: steps.check.outputs.missing == 'true'
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: gh workflow run deploy.yml --ref main || true
