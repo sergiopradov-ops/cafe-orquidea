@@ -19,6 +19,13 @@ const sacramento = Sacramento({
   variable: "--font-sacramento",
 });
 
+/**
+ * ISR de 5 min para todo el sitio: Firebase Hosting (CDN) respeta el
+ * s-maxage que emite Next. Sin esto, las páginas estáticas se cachean
+ * por un año y un deploy nuevo no se ve hasta purgar el CDN.
+ */
+export const revalidate = 300;
+
 export const metadata: Metadata = {
   metadataBase: new URL(siteConfig.url),
   title: {
