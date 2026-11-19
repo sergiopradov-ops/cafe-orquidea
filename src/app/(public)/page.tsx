@@ -83,7 +83,7 @@ export default async function HomePage() {
         <div className="relative container-page pt-32 pb-14 sm:pb-20">
           <p className="eyebrow text-crema/80">Café de especialidad · Condesa, CDMX</p>
           <h1 className="mt-5 max-w-3xl text-5xl leading-[1.05] sm:text-7xl">
-            Sólo es magia y paz
+            Magia y paz
             <br />
             en cada sorbo.
           </h1>
