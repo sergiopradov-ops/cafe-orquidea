@@ -12,6 +12,7 @@ import {
   cakeFlavorSchema,
   cakeSizeLabels,
   cakeSizeSchema,
+  minCakeDate,
   type LeadType,
 } from "@/lib/schemas/lead";
 
@@ -131,7 +132,18 @@ export function LeadForm({ type }: Props) {
           <>
         <label className="block">
           <span className="text-sm font-medium text-tinta/80">Fecha del pastel</span>
-          <input name="eventDate" type="date" required className={inputClass} {...aria("eventDate")} />
+          <input
+            name="eventDate"
+            type="date"
+            required
+            min={minCakeDate()}
+            suppressHydrationWarning
+            className={inputClass}
+            {...aria("eventDate")}
+          />
+          <span className="mt-1 block text-xs text-tinta/60">
+            Con al menos 48 horas de anticipación.
+          </span>
           {fieldError("eventDate")}
         </label>
 

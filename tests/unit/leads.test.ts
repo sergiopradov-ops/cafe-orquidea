@@ -1,6 +1,7 @@
 import { describe, expect, it } from "vitest";
 
-import { leadRequestSchema } from "@/lib/schemas/lead";
+import { businessDatePlusDays } from "@/lib/dates";
+import { leadRequestSchema, minCakeDate } from "@/lib/schemas/lead";
 import {
   buildCustomerAckEmail,
   buildInternalLeadEmail,
@@ -63,7 +64,7 @@ const cake = {
   name: "Ana López",
   email: "ana@example.com",
   phone: "55 1234 5678",
-  eventDate: "2026-12-20",
+  eventDate: "2099-12-20",
   size: "8",
   flavor: "zanahoria",
   hasAllergies: "no",
@@ -88,6 +89,17 @@ describe("solicitud de pastel", () => {
     ).toBe(true);
   });
 
+  it("exige 48 horas de anticipación", () => {
+    const today = businessDatePlusDays(new Date(), 0);
+    const tomorrow = businessDatePlusDays(new Date(), 1);
+    for (const eventDate of [today, tomorrow]) {
+      const res = leadRequestSchema.safeParse({ ...cake, eventDate });
+      expect(res.success).toBe(false);
+      expect(res.error?.issues[0]?.path).toEqual(["eventDate"]);
+    }
+    expect(leadRequestSchema.safeParse({ ...cake, eventDate: minCakeDate() }).success).toBe(true);
+  });
+
   it("no exige invitados ni ubicación", () => {
     expect(leadRequestSchema.safeParse(cake).success).toBe(true);
   });
@@ -104,5 +116,19 @@ describe("solicitud de pastel", () => {
   it("acusa recibo de la solicitud de pastel", () => {
     const lead = leadRequestSchema.parse(cake);
     expect(buildCustomerAckEmail(lead).subject).toContain("pastel");
+  });
+});
+
+describe("businessDatePlusDays", () => {
+  it("usa la fecha de CDMX, no la de UTC", () => {
+    // 2026-11-19 03:00 UTC = 2026-11-18 21:00 en CDMX
+    const now = new Date("2026-11-19T03:00:00Z");
+    expect(businessDatePlusDays(now, 0)).toBe("2026-11-18");
+    expect(businessDatePlusDays(now, 2)).toBe("2026-11-20");
+  });
+
+  it("cruza fin de mes y de año", () => {
+    const now = new Date("2026-12-31T18:00:00Z");
+    expect(businessDatePlusDays(now, 2)).toBe("2027-01-02");
   });
 });

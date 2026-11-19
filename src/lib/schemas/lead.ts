@@ -1,5 +1,7 @@
 import { z } from "zod";
 
+import { businessDatePlusDays } from "@/lib/dates";
+
 /**
  * Solicitudes de la Ola 1: catering, foodtruck y pastel por pedido.
  * Se envían por correo con Resend. En el Sprint 4–5 las de eventos se
@@ -48,6 +50,14 @@ export const cakeFlavorLabels: Record<z.infer<typeof cakeFlavorSchema>, string> 
   platano: "Plátano",
 };
 
+/** Anticipación mínima de un pastel por pedido: 48 h, es decir, 2 días de calendario. */
+export const CAKE_LEAD_DAYS = 2;
+
+/** Primera fecha que se puede pedir un pastel, en CDMX. */
+export function minCakeDate(now: Date = new Date()): string {
+  return businessDatePlusDays(now, CAKE_LEAD_DAYS);
+}
+
 /** Pastel por pedido. */
 export const cakeLeadSchema = z.object({
   type: z.literal("pastel"),
@@ -63,6 +73,13 @@ export const cakeLeadSchema = z.object({
 export const leadRequestSchema = z
   .discriminatedUnion("type", [eventLeadSchema, cakeLeadSchema])
   .superRefine((lead, ctx) => {
+    if (lead.type === "pastel" && lead.eventDate < minCakeDate()) {
+      ctx.addIssue({
+        code: "custom",
+        path: ["eventDate"],
+        message: "Pide tu pastel con al menos 48 horas de anticipación",
+      });
+    }
     if (lead.type === "pastel" && lead.hasAllergies === "si" && !lead.allergies) {
       ctx.addIssue({
         code: "custom",

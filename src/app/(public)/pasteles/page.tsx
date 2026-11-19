@@ -19,7 +19,7 @@ export default function PastelesPage() {
         <p>
           Sin gluten y sin azúcar, hecho para tu fecha. Elige tamaño y sabor,
           cuéntanos si hay alergias y cómo lo imaginas. Te mandamos la
-          cotización.
+          cotización. Pídelo con al menos 48 horas de anticipación.
         </p>
       </PageHero>
 
