@@ -4,7 +4,7 @@ import { Icon } from "@/components/brand/icons";
 import { PageHero } from "@/components/layout/page-hero";
 import { WhatsAppCta } from "@/components/layout/whatsapp-cta";
 import { ButtonLink } from "@/components/ui/button-link";
-import { siteConfig } from "@/lib/site";
+import { siteConfig, whatsappLink } from "@/lib/site";
 
 export const metadata: Metadata = {
   title: "Visítanos",
@@ -60,8 +60,11 @@ export default function VisitanosPage() {
               </li>
             ) : null}
             <li>
-              <a href={siteConfig.phone.href} className="underline underline-offset-4">
-                Tel. {siteConfig.phone.display}
+              <a
+                href={whatsappLink("Hola, tengo una pregunta.") ?? siteConfig.phone.href}
+                className="underline underline-offset-4"
+              >
+                WhatsApp {siteConfig.phone.display}
               </a>
             </li>
           </ul>
