@@ -9,7 +9,8 @@ export const siteConfig = {
   // `||` y no `??`: en Docker los build args vacíos llegan como "" (no undefined).
   url: process.env.NEXT_PUBLIC_SITE_URL || "http://localhost:3000",
   whatsapp: process.env.NEXT_PUBLIC_WHATSAPP_NUMBER || "",
-  email: process.env.NEXT_PUBLIC_CONTACT_EMAIL || "",
+  email: process.env.NEXT_PUBLIC_CONTACT_EMAIL || "contacto@orquidea.cafe",
+  phone: { display: "55 18 147 147", href: "tel:+525518147147" },
   instagram: "https://www.instagram.com/orquidea.cafe/",
   instagramHandle: "@orquidea.cafe",
   address,

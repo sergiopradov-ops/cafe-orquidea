@@ -21,7 +21,8 @@ env:
   WIF_PROVIDER: ${{ vars.WIF_PROVIDER || 'projects/468532277143/locations/global/workloadIdentityPools/github/providers/github-oidc' }}
   DEPLOYER_SA: ${{ vars.DEPLOYER_SA || 'github-deployer@cafeorquide-prod.iam.gserviceaccount.com' }}
   SITE_URL: ${{ vars.SITE_URL || 'https://orquidea.cafe' }}
-  CONTACT_EMAIL: ${{ vars.CONTACT_EMAIL || 'patychavezreza@gmail.com' }}
+  # Público; se define aquí para que no lo sobrescriba la variable de GitHub anterior.
+  CONTACT_EMAIL: contacto@orquidea.cafe
   WHATSAPP_NUMBER: ${{ vars.WHATSAPP_NUMBER || '' }}
   RECAPTCHA_SITE_KEY: ${{ vars.RECAPTCHA_SITE_KEY || '6Ldu0SUuAAAAAMTdvnIXiWk9fA6x3MuhvxIbbgAU' }}
 
