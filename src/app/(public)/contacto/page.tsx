@@ -59,6 +59,11 @@ export default function VisitanosPage() {
                 </a>
               </li>
             ) : null}
+            <li>
+              <a href={siteConfig.phone.href} className="underline underline-offset-4">
+                Tel. {siteConfig.phone.display}
+              </a>
+            </li>
           </ul>
           <WhatsAppCta message="Hola, tengo una pregunta." label="Escríbenos por WhatsApp" variant="button" />
         </div>

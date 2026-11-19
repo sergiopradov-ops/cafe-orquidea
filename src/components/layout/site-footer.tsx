@@ -54,6 +54,11 @@ export function SiteFooter() {
                 </a>
               </li>
             ) : null}
+            <li>
+              <a href={siteConfig.phone.href} className="hover:underline">
+                Tel. {siteConfig.phone.display}
+              </a>
+            </li>
           </ul>
         </div>
       </div>
