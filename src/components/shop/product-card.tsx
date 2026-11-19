@@ -6,11 +6,12 @@ import { formatMXN } from "@/lib/format";
 import { categoryLabels, type Product, type ProductCategory } from "@/lib/schemas/product";
 
 export const categoryIcons: Record<ProductCategory, IconName> = {
-  cafe: "cup",
-  "pan-dulce": "bread",
-  "pan-salado": "bread",
+  "bebidas-cafe": "cup",
+  "bebidas-sin-cafe": "leaf",
+  smoothies: "iced",
+  alimentos: "table",
+  panaderia: "bread",
   pasteles: "cake",
-  bebidas: "iced",
 };
 
 const tones = ["durazno", "arena", "crema"] as const;

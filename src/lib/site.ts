@@ -3,7 +3,7 @@ const address = "Amsterdam 147, CDMX";
 export const siteConfig = {
   name: "Orquídea",
   legalName: "Café Orquídea",
-  tagline: "Magia y paz en cada sorbo de café.",
+  tagline: "Sólo es magia y paz en cada sorbo.",
   description:
     "Café de especialidad en la Condesa. Repostería sin azúcar, keto y sin gluten, catering para eventos y foodtruck.",
   // `||` y no `??`: en Docker los build args vacíos llegan como "" (no undefined).

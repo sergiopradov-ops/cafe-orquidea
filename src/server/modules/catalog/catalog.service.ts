@@ -18,3 +18,8 @@ export async function listActiveProducts(): Promise<Product[]> {
 export async function getProductBySlug(slug: string): Promise<Product | null> {
   return catalog.find((p) => p.slug === slug && p.isActive) ?? null;
 }
+
+/** Productos marcados como favoritos (Home). */
+export async function listFeaturedProducts(): Promise<Product[]> {
+  return catalog.filter((p) => p.isActive && p.isFeatured);
+}

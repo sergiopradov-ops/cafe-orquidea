@@ -5,9 +5,10 @@ import { notFound } from "next/navigation";
 import { Icon } from "@/components/brand/icons";
 import { Photo } from "@/components/media/photo";
 import { categoryIcons } from "@/components/shop/product-card";
+import { ProductTags } from "@/components/shop/product-tags";
 import { ButtonLink } from "@/components/ui/button-link";
 import { formatMXN } from "@/lib/format";
-import { categoryLabels } from "@/lib/schemas/product";
+import { categoryLabels, categoryNotes } from "@/lib/schemas/product";
 import { siteConfig } from "@/lib/site";
 import {
   getProductBySlug,
@@ -25,7 +26,10 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { slug } = await params;
   const product = await getProductBySlug(slug);
   if (!product) return {};
-  return { title: product.name, description: product.description };
+  return {
+    title: product.name,
+    description: product.description || `${product.name} en Orquídea, Condesa CDMX.`,
+  };
 }
 
 export default async function ProductPage({ params }: Props) {
@@ -52,7 +56,13 @@ export default async function ProductPage({ params }: Props) {
         <p className="eyebrow mt-8 text-cafe">{categoryLabels[product.category]}</p>
         <h1 className="mt-3 text-5xl leading-tight sm:text-6xl">{product.name}</h1>
         <p className="mt-6 text-3xl font-display">{formatMXN(product.priceCents)}</p>
-        <p className="mt-6 text-lg leading-relaxed text-tinta/80">{product.description}</p>
+        <ProductTags tags={product.tags} className="mt-5" />
+        {product.description ? (
+          <p className="mt-6 text-lg leading-relaxed text-tinta/80">{product.description}</p>
+        ) : null}
+        {categoryNotes[product.category] ? (
+          <p className="mt-4 text-sm text-cafe">{categoryNotes[product.category]}</p>
+        ) : null}
         {product.leadTimeHours > 0 ? (
           <p className="mt-4 text-sm text-cafe">
             Pídelo con {product.leadTimeHours} h de anticipación.
