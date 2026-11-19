@@ -2,6 +2,8 @@ import "server-only";
 
 import { getServerEnv } from "@/server/modules/shared/env";
 
+import { resolveEmailMode } from "./email.mode";
+
 type SendEmailInput = {
   to: string | string[];
   subject: string;
@@ -12,14 +14,18 @@ type SendEmailInput = {
 
 /**
  * Envío transaccional vía API REST de Resend (sin SDK, una dependencia menos).
- * Si RESEND_API_KEY no está configurada, el correo se escribe en el log
- * (útil en local y mientras el cliente verifica su dominio en Resend).
+ * Sin RESEND_API_KEY: en local el correo se escribe en el log; en
+ * producción lanza error, para que quien llama no lo dé por enviado.
  */
 export async function sendEmail(input: SendEmailInput): Promise<void> {
   const env = getServerEnv();
 
-  if (!env.resendApiKey) {
-    console.warn("[email] RESEND_API_KEY no configurada; correo no enviado", {
+  const mode = resolveEmailMode(env);
+  if (mode === "misconfigured") {
+    throw new Error("[email] RESEND_API_KEY no configurada en producción");
+  }
+  if (mode === "log") {
+    console.warn("[email] RESEND_API_KEY no configurada; correo no enviado (local)", {
       to: input.to,
       subject: input.subject,
     });
