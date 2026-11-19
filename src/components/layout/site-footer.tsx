@@ -8,7 +8,7 @@ export function SiteFooter() {
     <footer className="bg-salvia-oscuro text-crema">
       <div className="container-page grid gap-12 py-16 md:grid-cols-[1.4fr_1fr_1fr_1fr]">
         <div>
-          <Logo className="text-6xl" />
+          <Logo className="h-14" />
           <p className="mt-4 max-w-xs text-sm text-crema/70">{siteConfig.tagline}</p>
         </div>
 

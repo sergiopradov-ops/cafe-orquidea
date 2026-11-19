@@ -19,7 +19,6 @@
 
   --font-sans: var(--font-montserrat), "Helvetica Neue", Helvetica, Arial, sans-serif;
   --font-display: var(--font-newsreader), "Hoefler Text", Baskerville, Georgia, serif;
-  --font-script: var(--font-sacramento), cursive;
 }
 
 @layer base {

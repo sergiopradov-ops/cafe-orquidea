@@ -36,7 +36,7 @@ export function SiteHeader() {
     >
       <div className="container-page flex h-16 items-center justify-between sm:h-20">
         <Link href="/" aria-label="Orquídea, inicio" onClick={() => setOpen(false)}>
-          <Logo className="text-4xl sm:text-5xl" />
+          <Logo className="h-9 sm:h-11" />
         </Link>
 
         <nav aria-label="Principal" className="hidden md:block">

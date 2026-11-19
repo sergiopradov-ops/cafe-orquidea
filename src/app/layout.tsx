@@ -1,5 +1,5 @@
 import type { Metadata, Viewport } from "next";
-import { Montserrat, Newsreader, Sacramento } from "next/font/google";
+import { Montserrat, Newsreader } from "next/font/google";
 
 import { SiteFooter } from "@/components/layout/site-footer";
 import { SiteHeader } from "@/components/layout/site-header";
@@ -12,11 +12,6 @@ const newsreader = Newsreader({
   subsets: ["latin"],
   variable: "--font-newsreader",
   style: ["normal", "italic"],
-});
-const sacramento = Sacramento({
-  subsets: ["latin"],
-  weight: "400",
-  variable: "--font-sacramento",
 });
 
 /**
@@ -50,7 +45,7 @@ export default function RootLayout({
   return (
     <html
       lang="es-MX"
-      className={`${montserrat.variable} ${newsreader.variable} ${sacramento.variable}`}
+      className={`${montserrat.variable} ${newsreader.variable}`}
     >
       <body className="flex min-h-dvh flex-col font-sans">
         <a
