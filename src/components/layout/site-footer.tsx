@@ -1,7 +1,7 @@
 import Link from "next/link";
 
 import { Logo } from "@/components/brand/logo";
-import { siteConfig } from "@/lib/site";
+import { siteConfig, whatsappLink } from "@/lib/site";
 
 export function SiteFooter() {
   return (
@@ -55,8 +55,11 @@ export function SiteFooter() {
               </li>
             ) : null}
             <li>
-              <a href={siteConfig.phone.href} className="hover:underline">
-                Tel. {siteConfig.phone.display}
+              <a
+                href={whatsappLink("Hola, tengo una pregunta.") ?? siteConfig.phone.href}
+                className="hover:underline"
+              >
+                WhatsApp {siteConfig.phone.display}
               </a>
             </li>
           </ul>
