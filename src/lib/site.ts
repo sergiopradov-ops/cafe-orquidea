@@ -21,6 +21,7 @@ export const siteConfig = {
     { href: "/panaderia", label: "Menú" },
     { href: "/eventos", label: "Catering" },
     { href: "/foodtruck", label: "Foodtruck" },
+    { href: "/pasteles", label: "Pasteles" },
     { href: "/contacto", label: "Visítanos" },
   ],
 } as const;

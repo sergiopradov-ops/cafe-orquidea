@@ -1,8 +1,14 @@
-import type { LeadRequest } from "@/lib/schemas/lead";
+import {
+  cakeFlavorLabels,
+  cakeSizeLabels,
+  type LeadRequest,
+  type LeadType,
+} from "@/lib/schemas/lead";
 
-const typeLabel: Record<LeadRequest["type"], string> = {
+const typeLabel: Record<LeadType, string> = {
   catering: "Catering",
   foodtruck: "Foodtruck",
+  pastel: "Pastel",
 };
 
 function escapeHtml(value: string): string {
@@ -15,11 +21,27 @@ function escapeHtml(value: string): string {
 }
 
 function rows(lead: LeadRequest): Array<[string, string]> {
-  return [
+  const contact: Array<[string, string]> = [
     ["Tipo", typeLabel[lead.type]],
     ["Nombre", lead.name],
     ["Correo", lead.email],
     ["Teléfono", lead.phone],
+  ];
+  if (lead.type === "pastel") {
+    return [
+      ...contact,
+      ["Fecha del pastel", lead.eventDate],
+      ["Tamaño", cakeSizeLabels[lead.size]],
+      ["Sabor", cakeFlavorLabels[lead.flavor]],
+      [
+        "Intolerancias o alergias",
+        lead.hasAllergies === "si" ? `Sí: ${lead.allergies ?? ""}` : "No",
+      ],
+      ["Decoración", lead.decoration ?? "—"],
+    ];
+  }
+  return [
+    ...contact,
     ["Fecha del evento", lead.eventDate],
     ["Invitados", String(lead.guests)],
     ["Ubicación", lead.location],
