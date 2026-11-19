@@ -43,6 +43,8 @@ export async function submitLead(input: unknown): Promise<SubmitLeadResult> {
     if (env.leadsInboxEmail) {
       const internal = buildInternalLeadEmail(lead);
       await sendEmail({ to: env.leadsInboxEmail, replyTo: lead.email, ...internal });
+    } else if (env.isProduction) {
+      throw new Error("[leads] LEADS_INBOX_EMAIL no configurado en producción");
     } else {
       console.warn("[leads] LEADS_INBOX_EMAIL no configurado", { type: lead.type });
     }
