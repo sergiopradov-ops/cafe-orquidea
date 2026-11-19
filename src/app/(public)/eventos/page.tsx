@@ -4,6 +4,8 @@ import { Icon, type IconName } from "@/components/brand/icons";
 import { LeadForm } from "@/components/booking/lead-form";
 import { PageHero } from "@/components/layout/page-hero";
 import { WhatsAppCta } from "@/components/layout/whatsapp-cta";
+import { Photo } from "@/components/media/photo";
+import { media } from "@/content/media";
 
 export const metadata: Metadata = {
   title: "Catering para eventos",
@@ -29,6 +31,9 @@ export default function EventosPage() {
 
       <div className="container-page grid gap-14 py-16 lg:grid-cols-[1fr_1.2fr] lg:py-24">
         <div>
+          <div className="relative mb-12 aspect-[4/3] overflow-hidden rounded-3xl">
+            <Photo item={media.catering} icon="table" sizes="(min-width: 1024px) 45vw, 100vw" priority />
+          </div>
           <h2 className="text-4xl">Qué podemos llevar</h2>
           <ul className="mt-8 space-y-8">
             {offer.map((o) => (

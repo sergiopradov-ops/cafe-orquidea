@@ -7,15 +7,15 @@ import { ProductCard } from "@/components/shop/product-card";
 import { ButtonLink } from "@/components/ui/button-link";
 import { media } from "@/content/media";
 import { siteConfig } from "@/lib/site";
-import { listActiveProducts } from "@/server/modules/catalog/catalog.service";
+import { listFeaturedProducts } from "@/server/modules/catalog/catalog.service";
 
-const cravings: Array<{ label: string; icon: IconName }> = [
-  { label: "Café", icon: "cup" },
-  { label: "Pan dulce", icon: "bread" },
-  { label: "Pastelería", icon: "cake" },
-  { label: "Keto", icon: "leaf" },
-  { label: "Sin gluten", icon: "wheatOff" },
-  { label: "Bebidas frías", icon: "iced" },
+const cravings: Array<{ label: string; icon: IconName; href: string }> = [
+  { label: "Bebidas de café", icon: "cup", href: "/panaderia#bebidas-cafe" },
+  { label: "Bebidas sin café", icon: "leaf", href: "/panaderia#bebidas-sin-cafe" },
+  { label: "Smoothies", icon: "iced", href: "/panaderia#smoothies" },
+  { label: "Alimentos", icon: "table", href: "/panaderia#alimentos" },
+  { label: "Panadería", icon: "bread", href: "/panaderia#panaderia" },
+  { label: "Pasteles", icon: "cake", href: "/panaderia#pasteles" },
 ];
 
 const eventServices: Array<{ title: string; text: string; icon: IconName }> = [
@@ -65,7 +65,7 @@ const steps = [
 ];
 
 export default async function HomePage() {
-  const favorites = (await listActiveProducts()).slice(0, 4);
+  const favorites = (await listFeaturedProducts()).slice(0, 4);
 
   return (
     <>
@@ -83,9 +83,9 @@ export default async function HomePage() {
         <div className="relative container-page pt-32 pb-14 sm:pb-20">
           <p className="eyebrow text-crema/80">Café de especialidad · Condesa, CDMX</p>
           <h1 className="mt-5 max-w-3xl text-5xl leading-[1.05] sm:text-7xl">
-            Magia y paz en
+            Sólo es magia y paz
             <br />
-            cada sorbo de café.
+            en cada sorbo.
           </h1>
           <p className="mt-6 max-w-xl text-lg text-crema/85">
             Repostería sin azúcar, keto y sin gluten, café de especialidad y una
@@ -108,7 +108,7 @@ export default async function HomePage() {
         <ul className="mt-10 grid grid-cols-3 gap-6 sm:grid-cols-6">
           {cravings.map((c) => (
             <li key={c.label}>
-              <Link href="/panaderia" className="group flex flex-col items-center gap-3 text-center">
+              <Link href={c.href} className="group flex flex-col items-center gap-3 text-center">
                 <span className="flex aspect-square w-full max-w-32 items-center justify-center rounded-full bg-crema-claro text-cafe shadow-[inset_0_0_0_1px_rgba(91,70,54,0.08)] transition-colors group-hover:bg-durazno-claro">
                   <Icon name={c.icon} className="h-1/2 w-1/2" />
                 </span>

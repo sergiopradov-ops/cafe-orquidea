@@ -33,6 +33,7 @@ export function Photo({
   sizes = "(min-width: 1024px) 50vw, 100vw",
 }: Props) {
   if (item.src) {
+    const contain = item.fit === "contain";
     return (
       <Image
         src={item.src}
@@ -40,7 +41,7 @@ export function Photo({
         fill
         priority={priority}
         sizes={sizes}
-        className={cn("object-cover", className)}
+        className={cn(contain ? "bg-white object-contain" : "object-cover", className)}
       />
     );
   }

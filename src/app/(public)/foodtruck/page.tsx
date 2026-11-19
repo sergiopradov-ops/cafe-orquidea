@@ -22,8 +22,8 @@ export default function FoodtruckPage() {
       </PageHero>
 
       <div className="container-page grid gap-14 py-16 lg:grid-cols-2 lg:py-24">
-        <div className="relative min-h-[360px] overflow-hidden rounded-3xl lg:min-h-full">
-          <Photo item={media.foodtruck} icon="truck" tone="salvia" />
+        <div className="relative min-h-[360px] overflow-hidden rounded-3xl bg-white lg:min-h-full">
+          <Photo item={media.foodtruck} icon="truck" tone="salvia" sizes="(min-width: 1024px) 50vw, 100vw" priority />
         </div>
 
         <div className="rounded-3xl bg-crema-claro p-6 sm:p-10">

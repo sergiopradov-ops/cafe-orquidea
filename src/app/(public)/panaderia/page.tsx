@@ -1,14 +1,15 @@
 import type { Metadata } from "next";
 
 import { PageHero } from "@/components/layout/page-hero";
-import { ProductCard } from "@/components/shop/product-card";
-import { categoryLabels, categoryOrder } from "@/lib/schemas/product";
+import { MenuItem } from "@/components/shop/menu-item";
+import { categoryLabels, categoryNotes, categoryOrder } from "@/lib/schemas/product";
 import { siteConfig } from "@/lib/site";
 import { listActiveProducts } from "@/server/modules/catalog/catalog.service";
 
 export const metadata: Metadata = {
   title: "Menú",
-  description: "Café de especialidad y repostería sin azúcar, keto y sin gluten.",
+  description:
+    "Bebidas de café, bebidas sin café, smoothies, alimentos, panadería y pasteles sin gluten y sin azúcar.",
 };
 
 export default async function MenuPage() {
@@ -24,31 +25,55 @@ export default async function MenuPage() {
     <>
       <PageHero eyebrow="Menú" title="Café de especialidad y antojos sin culpa.">
         <p>
-          Repostería sin azúcar, keto y sin gluten. Para quedarte en{" "}
-          {siteConfig.address} o para llevar. Los pedidos en línea llegan pronto.
+          Panadería sin gluten y sin azúcar, café mexicano de especialidad y
+          desayunos para quedarte en {siteConfig.address} o para llevar.
         </p>
       </PageHero>
 
-      <div className="container-page py-6">
-        <p className="rounded-xl bg-durazno-claro px-4 py-3 text-sm">
-          Menú de muestra: productos y precios por confirmar.
-        </p>
-      </div>
+      <nav
+        aria-label="Secciones del menú"
+        className="sticky top-16 z-30 border-b border-cafe/10 bg-crema/95 backdrop-blur sm:top-20"
+      >
+        <ul className="container-page flex gap-2 overflow-x-auto py-3 text-sm whitespace-nowrap">
+          {groups.map((g) => (
+            <li key={g.category}>
+              <a
+                href={`#${g.category}`}
+                className="inline-block rounded-full border border-cafe/20 px-4 py-1.5 transition-colors hover:bg-durazno-claro"
+              >
+                {categoryLabels[g.category]}
+              </a>
+            </li>
+          ))}
+        </ul>
+      </nav>
 
-      <div className="container-page space-y-20 pt-10 pb-24">
+      <div className="container-page grid gap-16 pt-12 pb-24 lg:grid-cols-2 lg:gap-x-20">
         {groups.map((g) => (
-          <section key={g.category} aria-labelledby={`cat-${g.category}`}>
+          <section
+            key={g.category}
+            id={g.category}
+            aria-labelledby={`cat-${g.category}`}
+            className="scroll-mt-36 sm:scroll-mt-40"
+          >
             <h2 id={`cat-${g.category}`} className="text-4xl">
               {categoryLabels[g.category]}
             </h2>
-            <div className="mt-8 grid gap-8 sm:grid-cols-2 lg:grid-cols-4">
-              {g.items.map((p, i) => (
-                <ProductCard key={p.id} product={p} index={i} />
+            {categoryNotes[g.category] ? (
+              <p className="mt-2 text-sm text-cafe">{categoryNotes[g.category]}</p>
+            ) : null}
+            <ul className="mt-4">
+              {g.items.map((p) => (
+                <MenuItem key={p.id} product={p} />
               ))}
-            </div>
+            </ul>
           </section>
         ))}
       </div>
+
+      <p className="container-page pb-16 text-xs text-tinta/60">
+        Precios en pesos mexicanos.
+      </p>
     </>
   );
 }
