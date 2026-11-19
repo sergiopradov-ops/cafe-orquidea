@@ -35,7 +35,7 @@ variable "leads_inbox_email" {
 variable "email_from" {
   description = "Remitente de correos (dominio verificado en Resend)."
   type        = string
-  default     = "Café Orquídea <onboarding@resend.dev>"
+  default     = "Café Orquídea <contacto@orquidea.cafe>"
 }
 
 variable "min_instances" {

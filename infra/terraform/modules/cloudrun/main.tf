@@ -89,10 +89,13 @@ resource "google_cloud_run_v2_service" "this" {
   }
 
   # El pipeline controla imagen y tráfico; Terraform no debe revertirlos.
+  # `template[0].revision` NO se ignora: gcloud fija el nombre de cada
+  # revisión, y si Terraform lo conserva, Cloud Run rechaza el cambio con
+  # 409 ("Revision named ... with different configuration already exists").
+  # Sin nombre, Cloud Run genera uno nuevo en cada apply.
   lifecycle {
     ignore_changes = [
       template[0].containers[0].image,
-      template[0].revision,
       template[0].labels,
       traffic,
       client,

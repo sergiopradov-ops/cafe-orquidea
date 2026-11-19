@@ -3,4 +3,4 @@ region            = "us-central1"
 github_repository = "owner/cafe-orquidea"
 site_domains      = ["cafeorquidea.mx", "www.cafeorquidea.mx", "orquidea-prod-xxxx.web.app"]
 leads_inbox_email = "eventos@cafeorquidea.mx"
-# email_from      = "Café Orquídea <hola@cafeorquidea.mx>"  # tras verificar el dominio en Resend
+# email_from      = "Café Orquídea <contacto@orquidea.cafe>"  # dominio verificado en Resend

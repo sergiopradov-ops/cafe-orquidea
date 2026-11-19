@@ -14,7 +14,7 @@ export function getServerEnv() {
     isProduction: process.env.NODE_ENV === "production",
     gcpProjectId: process.env.GCP_PROJECT_ID,
     resendApiKey: secret(process.env.RESEND_API_KEY),
-    emailFrom: process.env.EMAIL_FROM ?? "Café Orquídea <onboarding@resend.dev>",
+    emailFrom: process.env.EMAIL_FROM || "Café Orquídea <contacto@orquidea.cafe>",
     leadsInboxEmail: process.env.LEADS_INBOX_EMAIL,
     recaptchaSiteKey: process.env.NEXT_PUBLIC_RECAPTCHA_SITE_KEY || undefined,
     recaptchaMinScore: Number(process.env.RECAPTCHA_MIN_SCORE ?? "0.5"),
