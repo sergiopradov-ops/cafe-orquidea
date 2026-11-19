@@ -19,7 +19,7 @@ const valid = {
 describe("leadRequestSchema", () => {
   it("acepta una solicitud válida y convierte invitados a número", () => {
     const lead = leadRequestSchema.parse(valid);
-    expect(lead.guests).toBe(120);
+    expect(lead.type !== "pastel" && lead.guests).toBe(120);
   });
 
   it("rechaza correos inválidos", () => {
