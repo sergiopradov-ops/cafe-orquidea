@@ -13,9 +13,11 @@ export async function submitLeadAction(
   formData.delete("website");
 
   // Campos opcionales vacíos se omiten para que Zod los trate como ausentes.
-  for (const key of ["notes", "recaptchaToken"]) {
+  for (const key of ["notes", "recaptchaToken", "allergies", "decoration"]) {
     if (formData.get(key) === "") formData.delete(key);
   }
+  // Sin alergias, el detalle no aplica aunque se haya escrito algo.
+  if (formData.get("hasAllergies") === "no") formData.delete("allergies");
 
   return submitLead(Object.fromEntries(formData.entries()));
 }

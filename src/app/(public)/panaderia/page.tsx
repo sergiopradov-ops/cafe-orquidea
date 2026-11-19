@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import Link from "next/link";
 
 import { PageHero } from "@/components/layout/page-hero";
 import { MenuItem } from "@/components/shop/menu-item";
@@ -61,6 +62,14 @@ export default async function MenuPage() {
             </h2>
             {categoryNotes[g.category] ? (
               <p className="mt-2 text-sm text-cafe">{categoryNotes[g.category]}</p>
+            ) : null}
+            {g.category === "pasteles" ? (
+              <Link
+                href="/pasteles"
+                className="mt-4 inline-block rounded-full bg-salvia px-5 py-2.5 text-sm font-medium text-crema transition-colors hover:bg-salvia-oscuro"
+              >
+                Cotiza un pastel entero
+              </Link>
             ) : null}
             <ul className="mt-4">
               {g.items.map((p) => (

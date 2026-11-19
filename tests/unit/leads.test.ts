@@ -19,7 +19,7 @@ const valid = {
 describe("leadRequestSchema", () => {
   it("acepta una solicitud válida y convierte invitados a número", () => {
     const lead = leadRequestSchema.parse(valid);
-    expect(lead.guests).toBe(120);
+    expect(lead.type !== "pastel" && lead.guests).toBe(120);
   });
 
   it("rechaza correos inválidos", () => {
@@ -55,5 +55,54 @@ describe("correos de solicitud", () => {
   it("saluda al cliente por su nombre", () => {
     const lead = leadRequestSchema.parse(valid);
     expect(buildCustomerAckEmail(lead).text).toMatch(/^Hola Ana López/);
+  });
+});
+
+const cake = {
+  type: "pastel",
+  name: "Ana López",
+  email: "ana@example.com",
+  phone: "55 1234 5678",
+  eventDate: "2026-12-20",
+  size: "8",
+  flavor: "zanahoria",
+  hasAllergies: "no",
+};
+
+describe("solicitud de pastel", () => {
+  it("acepta una solicitud válida sin alergias", () => {
+    expect(leadRequestSchema.safeParse(cake).success).toBe(true);
+  });
+
+  it("rechaza tamaños y sabores fuera del menú", () => {
+    expect(leadRequestSchema.safeParse({ ...cake, size: "10" }).success).toBe(false);
+    expect(leadRequestSchema.safeParse({ ...cake, flavor: "fresa" }).success).toBe(false);
+  });
+
+  it("pide el detalle cuando hay alergias", () => {
+    const res = leadRequestSchema.safeParse({ ...cake, hasAllergies: "si" });
+    expect(res.success).toBe(false);
+    expect(res.error?.issues[0]?.path).toEqual(["allergies"]);
+    expect(
+      leadRequestSchema.safeParse({ ...cake, hasAllergies: "si", allergies: "nuez" }).success,
+    ).toBe(true);
+  });
+
+  it("no exige invitados ni ubicación", () => {
+    expect(leadRequestSchema.safeParse(cake).success).toBe(true);
+  });
+
+  it("arma el correo interno con tamaño, sabor y alergias", () => {
+    const lead = leadRequestSchema.parse({ ...cake, hasAllergies: "si", allergies: "nuez" });
+    const { subject, text } = buildInternalLeadEmail(lead);
+    expect(subject).toContain("Pastel");
+    expect(text).toContain("Tamaño: 8 personas");
+    expect(text).toContain("Sabor: Zanahoria");
+    expect(text).toContain("Intolerancias o alergias: Sí: nuez");
+  });
+
+  it("acusa recibo de la solicitud de pastel", () => {
+    const lead = leadRequestSchema.parse(cake);
+    expect(buildCustomerAckEmail(lead).subject).toContain("pastel");
   });
 });

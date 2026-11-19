@@ -1,13 +1,19 @@
 "use client";
 
 import Script from "next/script";
-import { startTransition, useActionState } from "react";
+import { startTransition, useActionState, useState } from "react";
 
 import {
   submitLeadAction,
   type LeadFormState,
 } from "@/app/(public)/_actions/submit-lead";
-import type { LeadRequest } from "@/lib/schemas/lead";
+import {
+  cakeFlavorLabels,
+  cakeFlavorSchema,
+  cakeSizeLabels,
+  cakeSizeSchema,
+  type LeadType,
+} from "@/lib/schemas/lead";
 
 declare global {
   interface Window {
@@ -22,7 +28,11 @@ declare global {
 
 const siteKey = process.env.NEXT_PUBLIC_RECAPTCHA_SITE_KEY || undefined;
 
-type Props = { type: LeadRequest["type"] };
+type Props = { type: LeadType };
+
+/** Opción tipo "pastilla": el radio va oculto y el label muestra el estado. */
+const choiceClass =
+  "flex cursor-pointer items-center justify-center rounded-xl border border-cafe/15 bg-white/80 px-3 py-3 text-center text-sm transition-colors hover:border-salvia has-[:checked]:border-salvia has-[:checked]:bg-salvia has-[:checked]:text-crema has-[:focus-visible]:ring-2 has-[:focus-visible]:ring-salvia has-[:focus-visible]:ring-offset-2";
 
 const inputClass =
   "mt-2 w-full rounded-xl border border-cafe/15 bg-white/80 px-4 py-3 font-normal transition-colors placeholder:text-tinta/40 focus:border-salvia focus:bg-white";
@@ -32,6 +42,7 @@ export function LeadForm({ type }: Props) {
     submitLeadAction,
     null,
   );
+  const [hasAllergies, setHasAllergies] = useState<"si" | "no" | null>(null);
 
   async function getToken(): Promise<string> {
     const recaptcha = window.grecaptcha?.enterprise;
@@ -116,6 +127,93 @@ export function LeadForm({ type }: Props) {
           {fieldError("email")}
         </label>
 
+        {type === "pastel" ? (
+          <>
+        <label className="block">
+          <span className="text-sm font-medium text-tinta/80">Fecha del pastel</span>
+          <input name="eventDate" type="date" required className={inputClass} {...aria("eventDate")} />
+          {fieldError("eventDate")}
+        </label>
+
+        <fieldset {...aria("size")}>
+          <legend className="text-sm font-medium text-tinta/80">Tamaño</legend>
+          <div className="mt-2 grid grid-cols-2 gap-2 sm:grid-cols-4">
+            {cakeSizeSchema.options.map((size) => (
+              <label key={size} className={choiceClass}>
+                <input type="radio" name="size" value={size} required className="sr-only" />
+                {cakeSizeLabels[size]}
+              </label>
+            ))}
+          </div>
+          {fieldError("size")}
+        </fieldset>
+
+        <fieldset {...aria("flavor")}>
+          <legend className="text-sm font-medium text-tinta/80">Sabor</legend>
+          <div className="mt-2 grid grid-cols-2 gap-2 sm:grid-cols-4">
+            {cakeFlavorSchema.options.map((flavor) => (
+              <label key={flavor} className={choiceClass}>
+                <input type="radio" name="flavor" value={flavor} required className="sr-only" />
+                {cakeFlavorLabels[flavor]}
+              </label>
+            ))}
+          </div>
+          {fieldError("flavor")}
+        </fieldset>
+
+        <fieldset {...aria("hasAllergies")}>
+          <legend className="text-sm font-medium text-tinta/80">
+            ¿Alguna intolerancia o alergia que debamos saber?
+          </legend>
+          <div className="mt-2 grid grid-cols-2 gap-2">
+            {(["no", "si"] as const).map((value) => (
+              <label key={value} className={choiceClass}>
+                <input
+                  type="radio"
+                  name="hasAllergies"
+                  value={value}
+                  required
+                  className="sr-only"
+                  onChange={() => setHasAllergies(value)}
+                />
+                {value === "si" ? "Sí" : "No"}
+              </label>
+            ))}
+          </div>
+          {fieldError("hasAllergies")}
+        </fieldset>
+
+        {hasAllergies === "si" ? (
+          <label className="block">
+            <span className="text-sm font-medium text-tinta/80">¿Cuáles?</span>
+            <input
+              name="allergies"
+              required
+              maxLength={500}
+              placeholder="Ej. nuez, lácteos, huevo"
+              className={inputClass}
+              {...aria("allergies")}
+            />
+            {fieldError("allergies")}
+          </label>
+        ) : null}
+
+        <label className="block">
+          <span className="text-sm font-medium text-tinta/80">
+            ¿Alguna decoración en especial? (opcional)
+          </span>
+          <textarea
+            name="decoration"
+            rows={4}
+            maxLength={1000}
+            placeholder="Mensaje, colores, flores, temática…"
+            className={inputClass}
+          />
+        </label>
+
+          </>
+        ) : (
+          <>
         <div className="grid gap-4 sm:grid-cols-2">
           <label className="block">
             <span className="text-sm font-medium text-tinta/80">Fecha del evento</span>
@@ -139,6 +237,9 @@ export function LeadForm({ type }: Props) {
           <span className="text-sm font-medium text-tinta/80">Cuéntanos más (opcional)</span>
           <textarea name="notes" rows={4} maxLength={2000} className={inputClass} />
         </label>
+
+          </>
+        )}
 
         {state && !state.ok ? (
           <p role="alert" className="text-sm text-red-700">
