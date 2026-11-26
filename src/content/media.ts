@@ -9,6 +9,8 @@ export type MediaItem = {
   alt: string;
   /** "contain" para recortes sobre fondo blanco (la foto no se corta). */
   fit?: "cover" | "contain";
+  /** Punto focal del recorte con "cover" (CSS object-position), ej. "50% 35%". */
+  position?: string;
 };
 
 export const media = {
@@ -20,8 +22,8 @@ export const media = {
   },
   foodtruck: {
     src: "/images/foodtruck.jpg",
-    alt: "Foodtruck negro de Orquídea con luces, eucalipto, flores y mesa de jardín",
-    fit: "contain",
+    alt: "Foodtruck gris de Orquídea con letrero dorado, cafetera de espresso, vitrina de repostería y arreglos de eucalipto y flores blancas",
+    position: "50% 35%",
   },
   comunidad: { src: null, alt: "Club de corredores de Orquídea" },
 } satisfies Record<string, MediaItem>;

@@ -41,6 +41,7 @@ export function Photo({
         fill
         priority={priority}
         sizes={sizes}
+        style={item.position ? { objectPosition: item.position } : undefined}
         className={cn(contain ? "bg-white object-contain" : "object-cover", className)}
       />
     );
